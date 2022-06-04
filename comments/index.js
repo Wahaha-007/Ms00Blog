@@ -24,7 +24,7 @@ app.post('/posts/:id/comments', async (req, res) => {
   // commentsByPostId[req.params.id] returns undefine => init empty array
   const comments = commentsByPostId[req.params.id] || []; // 1.1 Read the present array
 
-  comments.push({ id: commentId, content }); // 1.2 Update the array
+  comments.push({ id: commentId, content, status: 'pending' }); // 1.2 Update the array
 
   commentsByPostId[req.params.id] = comments; // 1.3 Update the Whole Object
 
@@ -35,6 +35,7 @@ app.post('/posts/:id/comments', async (req, res) => {
       id: commentId,
       content,
       postId: req.params.id,
+      status: 'pending',
     },
   });
 
@@ -42,8 +43,32 @@ app.post('/posts/:id/comments', async (req, res) => {
   res.status(201).send(comments);
 });
 
-app.post('/events', (req, res) => {
-  console.log('Received Event', req.body.type);
+// 4 New additional section for moderation
+
+app.post('/events', async (req, res) => {
+  // 4.1 Get data
+  const { type, data } = req.body;
+
+  if (type === 'CommentModerated') {
+    const { postId, id, status, content } = data;
+
+    const comments = commentsByPostId[postId];
+
+    const comment = comments.find((comment) => comment.id === id);
+    comment.status = status;
+
+    // 4.2 Emit data
+    await axios.post('http://localhost:4005/events', {
+      type: 'CommentUpdated',
+      data: {
+        id,
+        status,
+        postId,
+        content,
+      },
+    });
+  }
+
   res.send({});
 });
 
