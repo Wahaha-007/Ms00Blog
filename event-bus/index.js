@@ -5,8 +5,12 @@ import axios from 'axios';
 const app = express(); // This program is really like echo broadcaster !
 app.use(bodyParser.json());
 
+const events = [];
+
 app.post('/events', (req, res) => {
   const event = req.body; // Can be any data type
+
+  events.push(event); // Laat event at the end of Array
 
   axios.post('http://localhost:4000/events', event).catch((err) => {
     console.log(err.message); // posts
@@ -22,6 +26,10 @@ app.post('/events', (req, res) => {
   });
 
   res.send({ status: 'OK' }); // Tell the  original event sender OK
+});
+
+app.get('/events', (req, res) => {
+  res.send(events);
 });
 
 app.listen(4005, () => {
