@@ -1,0 +1,17 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: posts-depl
+spec:
+  replicas: 1
+  selector: # Select which pods to manage
+    matchLabels: # Label can be [Dora: emon], not just [app: posts]
+      app: posts
+  template: # Specify pods configuration
+    metadata:
+      labels:
+        app: posts
+    spec:
+      containers:
+        - name: posts
+          image: wahaha007/posts:latest
