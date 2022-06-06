@@ -14,7 +14,7 @@ app.post('/events', async (req, res) => {
     const status = data.content.includes('orange') ? 'rejected' : 'approved';
 
     // 3. Send databack to the BUS
-    await axios.post('http://localhost:4005/events', {
+    await axios.post('http://event-bus-srv:4005/events', {
       type: 'CommentModerated', // Imply receiver
       data: {
         id: data.id,

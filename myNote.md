@@ -9,3 +9,4 @@
    posts-srv NodePort 10.99.251.231 <none> 4000:32353/TCP 4h50m
 
 curl -d '{"title":"POST"}' -H "Content-Type: application/json" -X POST http://192.168.49.2:32353/posts
+ref : https://gist.github.com/subfuzion/08c5d85437d5d4f00e58
