@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: moderation-depl
+spec:
+  replicas: 1
+  selector: # Select which pods to manage, act like 'Class selector'
+    matchLabels: # Label can be [Dora: emon], not just [app: posts]
+      app: moderation
+  template: # Specify pods configuration
+    metadata:
+      labels:
+        app: moderation # act like a 'Class name' in HTML
+    spec:
+      containers:
+        - name: moderation
+          image: wahaha007/moderation
+--- # Use --- to seperate many Objects in one file
+apiVersion: v1
+kind: Service
+metadata:
+  name: moderation-srv
+spec:
+  # type: ClusterIP # In not specified, default is ClusterIP
+  selector:
+    app: moderation
+  ports:
+    - name: moderation
+      protocol: TCP
+      port: 4003 #
+      targetPort: 4003 #

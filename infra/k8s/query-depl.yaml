@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: query-depl
+spec:
+  replicas: 1
+  selector: # Select which pods to manage, act like 'Class selector'
+    matchLabels: # Label can be [Dora: emon], not just [app: posts]
+      app: query
+  template: # Specify pods configuration
+    metadata:
+      labels:
+        app: query # act like a 'Class name' in HTML
+    spec:
+      containers:
+        - name: query
+          image: wahaha007/query
+--- # Use --- to seperate many Objects in one file
+apiVersion: v1
+kind: Service
+metadata:
+  name: query-srv
+spec:
+  # type: ClusterIP # In not specified, default is ClusterIP
+  selector:
+    app: query
+  ports:
+    - name: query
+      protocol: TCP
+      port: 4002 #
+      targetPort: 4002 #

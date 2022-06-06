@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: comments-depl
+spec:
+  replicas: 1
+  selector: # Select which pods to manage, act like 'Class selector'
+    matchLabels: # Label can be [Dora: emon], not just [app: posts]
+      app: comments
+  template: # Specify pods configuration
+    metadata:
+      labels:
+        app: comments # act like a 'Class name' in HTML
+    spec:
+      containers:
+        - name: comments
+          image: wahaha007/comments
+--- # Use --- to seperate many Objects in one file
+apiVersion: v1
+kind: Service
+metadata:
+  name: comments-srv
+spec:
+  # type: ClusterIP # In not specified, default is ClusterIP
+  selector:
+    app: comments
+  ports:
+    - name: comments
+      protocol: TCP
+      port: 4001 #
+      targetPort: 4001 #
