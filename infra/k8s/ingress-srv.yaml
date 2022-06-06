@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-srv
+  # The annotations section tell ingress controller to look for routing rules later
+  annotations:
+    kubernetes.io/ingress.class: nginx
+spec:
+  rules:
+    - host: posts.com
+      http:
+        paths:
+          - path: /posts
+            pathType: Prefix # This line is introduced in v1
+            backend:
+              service:
+                name: posts-clusterip-srv
+                port:
+                  number: 4000

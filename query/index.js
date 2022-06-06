@@ -66,7 +66,7 @@ app.post('/events', (req, res) => {
   const { type, data } = req.body;
 
   handleEvent(type, data);
-  // console.log(posts);
+  console.log(posts);
   res.send({});
 });
 
