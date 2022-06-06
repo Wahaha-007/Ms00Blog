@@ -1,31 +1,31 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: posts-depl
+  name: event-bus-depl
 spec:
   replicas: 1
   selector: # Select which pods to manage, act like 'Class selector'
     matchLabels: # Label can be [Dora: emon], not just [app: posts]
-      app: posts
+      app: event-bus
   template: # Specify pods configuration
     metadata:
       labels:
-        app: posts # act like a 'Class name' in HTML
+        app: event-bus # act like a 'Class name' in HTML
     spec:
       containers:
-        - name: posts
-          image: wahaha007/posts
+        - name: event-bus
+          image: wahaha007/event-bus
 --- # Use --- to seperate many Objects in one file
 apiVersion: v1
 kind: Service
 metadata:
-  name: posts-clusterip-srv
+  name: event-bus-srv
 spec:
   # type: ClusterIP # In not specified, default is ClusterIP
   selector:
-    app: posts
+    app: event-bus
   ports:
-    - name: posts
+    - name: event-bus
       protocol: TCP
-      port: 4000 #
-      targetPort: 4000 #
+      port: 4005 #
+      targetPort: 4005 #
