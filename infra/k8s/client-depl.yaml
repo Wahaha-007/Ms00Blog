@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: client-depl
+spec:
+  replicas: 1
+  selector: # Select which pods to manage, act like 'Class selector'
+    matchLabels: # Label can be [Dora: emon], not just [app: posts]
+      app: client
+  template: # Specify pods configuration
+    metadata:
+      labels:
+        app: client # act like a 'Class name' in HTML
+    spec:
+      containers:
+        - name: client
+          image: wahaha007/client
+--- # Use --- to seperate many Objects in one file
+apiVersion: v1
+kind: Service
+metadata:
+  name: client-srv
+spec:
+  # type: ClusterIP # In not specified, default is ClusterIP
+  selector:
+    app: client
+  ports:
+    - name: client
+      protocol: TCP
+      port: 3000 #
+      targetPort: 3000 #
