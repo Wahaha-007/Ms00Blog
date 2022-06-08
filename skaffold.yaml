@@ -1,0 +1,63 @@
+apiVersion: skaffold/v2alpha3
+kind: Config
+deploy:
+  kubectl:
+    manifests:
+      - ./infra/k8s/* # create/watch(for update)/delete(clean cluster) objects
+build:
+  local:
+    push: false # Auto pushwhen build
+  artifacts:
+    - image:  wahaha007/client
+      context: client # Source directory name.
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*.js' # Seems like volumn in Docker-compose
+            dest: .
+
+    - image:  wahaha007/comments
+      context: comments # Source directory name.
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: '*.js' # Seems like volumn in Docker-compose
+            dest: .
+
+    - image:  wahaha007/event-bus
+      context: event-bus # Source directory name.
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: '*.js' # Seems like volumn in Docker-compose
+            dest: .
+
+    - image:  wahaha007/moderation
+      context: moderation # Source directory name.
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: '*.js' # Seems like volumn in Docker-compose
+            dest: .
+
+    - image:  wahaha007/posts
+      context: posts # Source directory name.
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: '*.js' # Seems like volumn in Docker-compose
+            dest: .
+
+    - image:  wahaha007/query
+      context: query # Source directory name.
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: '*.js' # Seems like volumn in Docker-compose
+            dest: .
